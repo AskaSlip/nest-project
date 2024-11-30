@@ -9,6 +9,7 @@ export type Config = {
 export type MailConfig = {
   email: string;
   password: string;
+  emailForCheck: string;
 };
 
 export type AppConfig = {

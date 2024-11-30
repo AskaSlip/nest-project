@@ -9,7 +9,6 @@ export class CheckProfanityHelper {
 
     const badWord = words.find((word) => this.badWords.includes(word));
     if (badWord) {
-      console.log('Profanity found:', badWord);
       return true;
     }
     return false;

@@ -10,6 +10,7 @@ export default (): Config => ({
   mail: {
     email: process.env.SMTP_EMAIL,
     password: process.env.SMTP_PASSWORD,
+    emailForCheck: process.env.EMAIL_FOR_CHECK,
   },
   database: {
     host: process.env.POSTGRES_HOST,

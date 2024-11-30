@@ -53,12 +53,11 @@ export class OffersService {
     userData: IUserData,
     dto: OfferBaseReqDto,
   ): Promise<OfferEntity> {
-    // check is user not banned
     const user = await OfferHelper.checkUserStatus(
       this.userRepository,
       userData.userId,
     );
-    // check by account type
+
     if (user.account === AccountEnum.BASIC) {
       const offerCount = await this.offerRepository.count({
         where: { user_id: user.id },
@@ -70,24 +69,20 @@ export class OffersService {
         );
       }
     }
-    // check brand
+
     const brand = await OfferHelper.validateBrand(
       this.carBrandRepository,
       dto.brand,
       this.mailService,
     );
 
-    // currency rate
     const { currencyRate, priceInUAH } = await OfferHelper.getConvertedPrice(
       this.currencyService,
       dto.currency,
       dto.price,
     );
 
-    //check location
     await OfferHelper.validateLocation(dto.city, dto.region);
-
-    // check bad-word filter
 
     const offer = await this.offerRepository.save(
       this.offerRepository.create({
@@ -111,12 +106,10 @@ export class OffersService {
     userData: IUserData,
     dto: OfferBaseReqDto,
   ): Promise<OfferEntity> {
-    // check is user not banned
     const user = await OfferHelper.checkUserStatus(
       this.userRepository,
       userData.userId,
     );
-    // check showroom
     const doUserHasShowroom = await this.userRepository.findOneBy({
       id: user.id,
       isHaveSalon: true,
@@ -124,19 +117,16 @@ export class OffersService {
     if (!doUserHasShowroom) {
       throw new ConflictException('User has no showroom');
     }
-    //got showroom
     const showroom = await this.carShowroomRepository.findOneBy({
       user_id: userData.userId,
     });
 
-    // check brand
     const brand = await OfferHelper.validateBrand(
       this.carBrandRepository,
       dto.brand,
       this.mailService,
     );
 
-    // currency rate
     const { currencyRate, priceInUAH } = await OfferHelper.getConvertedPrice(
       this.currencyService,
       dto.currency,
@@ -144,8 +134,6 @@ export class OffersService {
     );
 
     await OfferHelper.validateLocation(dto.city, dto.region);
-
-    // check bad-word filter
 
     const offer = await this.offerRepository.save(
       this.offerRepository.create({
