@@ -47,7 +47,10 @@ export class TasksService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   handleCron() {
-    this.getCurrency();
     this.updateCurrency();
+  }
+  @Cron(CronExpression.EVERY_HOUR)
+  handleCurrencyCron() {
+    this.getCurrency();
   }
 }
